@@ -5,14 +5,21 @@ import "./App.css";
 import Landing from "./components/Landing/Landing";
 import Dashboard from "./components/Dashboard/Dashboard";
 import SignupForm from "./components/SignupForm/SignupForm";
-import SigninForm from "./components/SigninForm/SigninForm"
+import SigninForm from "./components/SigninForm/SigninForm";
+import authService from "./services/authService";
 const App = () => {
   // You can experiment with displaying the components by changing the initial state of user from null to something like { username: 'Shawn Doe' } and back to view the different templates.
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(authService.getUser()); // using the method from authservice
+
+  const handleSignout = () => {
+    authService.signout();
+    setUser(null);
+  };
 
   return (
     <>
-      <NavBar user={user} />
+      <NavBar user={user} handleSignout={handleSignout} />
+      {/* pass the logout functionality to the navbar */}
       <Routes>
         {user ? (
           <Route path="/" element={<Dashboard user={user} />} />
